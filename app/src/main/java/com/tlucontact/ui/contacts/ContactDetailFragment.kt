@@ -211,9 +211,22 @@ class ContactDetailFragment : Fragment() {
         }
     }
 
-    // Các phương thức khác giữ nguyên...
     private fun showDeleteConfirmationDialog() {
-        // Giữ nguyên code hiện tại
+        val contactId = contactId ?: return // Thêm kiểm tra null
+
+        // Sử dụng MaterialAlertDialogBuilder thay vì AlertDialog.Builder thông thường
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            .setTitle("Xóa liên hệ")
+            .setMessage("Bạn có chắc chắn muốn xóa liên hệ này?")
+            .setPositiveButton("Xóa") { _, _ ->
+                binding.progressBar.visibility = View.VISIBLE // Hiển thị loading
+                viewModel.deleteContact(contactId)
+            }
+            .setNegativeButton("Hủy", null)
+            .setCancelable(false) // Ngăn việc bấm ngoài dialog để đóng
+            .create()
+
+        dialog.show()
     }
 
     private fun observeViewModel() {

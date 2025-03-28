@@ -149,8 +149,7 @@ class ContactsFragment : Fragment() {
                 // Hiển thị thông báo lỗi chỉ khi có lỗi thực sự
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
 
-                // Trạng thái trống sẽ được xử lý bởi observer cho contactList
-                // Không làm ẩn recyclerView ở đây nếu có dữ liệu
+
             }
         }
     }

@@ -162,19 +162,31 @@ class ContactViewModel : ViewModel() {
 
         _loading.value = true
         _operationSuccessful.value = false
+        _error.value = null // Reset error
 
         viewModelScope.launch {
             try {
+                // Thêm logging để debug
+                Log.d("ContactViewModel", "Deleting contact with ID: $contactId")
+
                 val success = repository.deleteContact(contactId)
                 if (success) {
                     _operationSuccessful.value = true
-                    _selectedContact.value = null // Xóa contact đã chọn
-                    loadContacts() // Tải lại danh sách sau khi xóa
+                    _selectedContact.value = null
+
+                    // Log thành công
+                    Log.d("ContactViewModel", "Successfully deleted contact: $contactId")
+
+                    // Tải lại danh sách sau khi xóa
+                    val updatedList = _contactList.value?.filter { it.id != contactId } ?: emptyList()
+                    _contactList.value = updatedList
                 } else {
                     _error.value = "Không thể xóa liên hệ"
+                    Log.e("ContactViewModel", "Failed to delete contact: $contactId")
                 }
             } catch (e: Exception) {
                 _error.value = "Lỗi xóa liên hệ: ${e.message}"
+                Log.e("ContactViewModel", "Exception when deleting contact: ${e.message}", e)
             } finally {
                 _loading.value = false
             }

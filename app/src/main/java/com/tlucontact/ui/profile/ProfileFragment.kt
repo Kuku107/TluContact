@@ -100,8 +100,6 @@ class ProfileFragment : Fragment() {
         // Sign out from Firebase
         auth.signOut()
 
-        // Clear any local storage user data if necessary
-        // For example, clear SharedPreferences data
 
         // Show success message
         Toast.makeText(context, "Đăng xuất thành công", Toast.LENGTH_SHORT).show()

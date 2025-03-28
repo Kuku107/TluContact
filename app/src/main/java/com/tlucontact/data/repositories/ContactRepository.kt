@@ -3,7 +3,6 @@ package com.tlucontact.data.repository
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.tlucontact.data.models.ContactModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -17,7 +16,7 @@ class ContactRepository {
     private val currentUserId: String
         get() = auth.currentUser?.uid ?: ""
 
-    // Lấy tất cả liên hệ của người dùng hiện tại
+
     suspend fun getUserContacts(): List<ContactModel> = withContext(Dispatchers.IO) {
         if (currentUserId.isEmpty()) return@withContext emptyList<ContactModel>()
 
@@ -33,7 +32,7 @@ class ContactRepository {
                 contact
             }
 
-            // Debug log để kiểm tra
+
             Log.d("ContactRepository", "Fetched ${result.size} contacts for user $currentUserId")
 
             result
@@ -136,21 +135,34 @@ class ContactRepository {
 
     // Xóa liên hệ
     suspend fun deleteContact(contactId: String): Boolean = withContext(Dispatchers.IO) {
-        if (currentUserId.isEmpty() || contactId.isEmpty()) return@withContext false
+        if (currentUserId.isEmpty() || contactId.isEmpty()) {
+            Log.e("ContactRepository", "Invalid parameters: userId=$currentUserId, contactId=$contactId")
+            return@withContext false
+        }
 
         try {
             // Kiểm tra quyền sở hữu trước khi xóa
             val doc = contactsCollection.document(contactId).get().await()
             val existingContact = doc.toObject(ContactModel::class.java)
 
-            if (existingContact?.ownerId != currentUserId) {
+            if (existingContact == null) {
+                Log.e("ContactRepository", "Contact not found: $contactId")
                 return@withContext false
             }
 
+            if (existingContact.ownerId != currentUserId) {
+                Log.e("ContactRepository", "Permission denied: contact owner=${existingContact.ownerId}, currentUser=$currentUserId")
+                return@withContext false
+            }
+
+            // Thực hiện xóa với await() để đảm bảo hoàn thành
             contactsCollection.document(contactId).delete().await()
-            true
+            Log.d("ContactRepository", "Contact deleted successfully: $contactId")
+
+            return@withContext true
         } catch (e: Exception) {
-            false
+            Log.e("ContactRepository", "Error deleting contact: ${e.message}", e)
+            return@withContext false
         }
     }
 }
