@@ -7,13 +7,17 @@
     <item
         android:id="@+id/nav_staff"
         android:icon="@drawable/ic_staff"
-        android:title="CBGV" />
+        android:title="Cán bộ" />
     <item
         android:id="@+id/nav_students"
         android:icon="@drawable/ic_students"
         android:title="Sinh viên" />
     <item
+        android:id="@+id/nav_contacts"
+        android:icon="@drawable/ic_contacts"
+        android:title="Danh bạ" />
+    <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_profile"
-        android:title="Cá nhân" />
+        android:title="Tài khoản" />
 </menu>
