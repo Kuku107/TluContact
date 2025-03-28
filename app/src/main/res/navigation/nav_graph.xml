@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_units">
+
+    <fragment
+        android:id="@+id/nav_units"
+        android:name="com.tlucontact.ui.units.UnitsFragment"
+        android:label="Đơn vị"
+        tools:layout="@layout/fragment_units">
+        <action
+            android:id="@+id/action_units_to_unit_detail"
+            app:destination="@id/nav_unit_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_unit_detail"
+        android:name="com.tlucontact.ui.units.UnitDetailFragment"
+        android:label="Chi tiết đơn vị"
+        tools:layout="@layout/fragment_unit_detail">
+        <argument
+            android:name="unitId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_unit_detail_to_staff_detail"
+            app:destination="@id/nav_staff_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_staff"
+        android:name="com.tlucontact.ui.staff.StaffFragment"
+        android:label="Cán bộ/Giảng viên"
+        tools:layout="@layout/fragment_staff">
+        <action
+            android:id="@+id/action_staff_to_staff_detail"
+            app:destination="@id/nav_staff_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_staff_detail"
+        android:name="com.tlucontact.ui.staff.StaffDetailFragment"
+        android:label="Chi tiết cán bộ"
+        tools:layout="@layout/fragment_staff_detail">
+        <argument
+            android:name="staffId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_students"
+        android:name="com.tlucontact.ui.students.StudentsFragment"
+        android:label="Sinh viên"
+        tools:layout="@layout/fragment_students">
+        <action
+            android:id="@+id/action_students_to_student_detail"
+            app:destination="@id/nav_student_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_student_detail"
+        android:name="com.tlucontact.ui.students.StudentDetailFragment"
+        android:label="Chi tiết sinh viên"
+        tools:layout="@layout/fragment_student_detail">
+        <argument
+            android:name="studentId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.tlucontact.ui.profile.ProfileFragment"
+        android:label="Tài khoản"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
